@@ -39,9 +39,13 @@ def home():
     # data=cur.fetchall()
     # cur.close() 
     # print(data)
-    return "Hello World !"
-    # return render_template("index.html")
+    return render_template("index.html")
 
+@app.route('/hello',methods=['POST','GET'])
+def hello():
+     
+     return 'Hello World!'
+     
 @app.errorhandler(404)
 def notfounf():
     return render_template("index.html")
