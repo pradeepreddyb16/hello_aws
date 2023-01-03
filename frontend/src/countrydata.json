@@ -1,0 +1,123 @@
+[   
+ {"state_id":"1","state_name":"Andhra Pradesh","cities":[
+    {"city_id":"1","city_name":"Amaravathi","state_id":"1"},
+    {"city_id":"2","city_name":"Vijayawada","state_id":"1"}
+ ]
+ },
+ {"state_id":"2","state_name":"Arunachal Pradesh","cities":[]
+ },
+ {"state_id":"3","state_name":"Assam","cities":[
+    {"city_id":"1","city_name":"Guwahati","state_id":"3"}
+ ]
+ },
+ {"state_id":"4","state_name":"Bihar","cities":[]
+ },
+ {"state_id":"5","state_name":"Chhattisgarh","cities":[
+    {"city_id":"1","city_name":"Raipur","state_id":"5"}
+ ]
+ },
+ {"state_id":"6","state_name":"Chandigarh","cities":[
+    {"city_id":"1","city_name":"Chandigarh","state_id":"6"}
+ ]
+ },
+ {"state_id":"7","state_name":"Goa","cities":[
+    {"city_id":"1","city_name":"Goa","state_id":"7"}
+ ]
+ },
+ {"state_id":"8","state_name":"Gujrat","cities":[
+    {"city_id":"1","city_name":"Vadodara","state_id":"8"},
+    {"city_id":"2","city_name":"Surat","state_id":"8"},
+    {"city_id":"3","city_name":"Ahmedabad","state_id":"8"}
+ ]
+ },
+ {"state_id":"9","state_name":"Haryana","cities":[
+    {"city_id":"1","city_name":"Gurugram","state_id":"9"},
+     {"city_id":"2","city_name":"Gurgaon","state_id":"9"}
+ ]
+ },
+ {"state_id":"10","state_name":"Himachal Pradesh","cities":[]
+ },
+ {"state_id":"11","state_name":"Jharkhand","cities":[]
+ },
+ {"state_id":"12","state_name":"Karnataka","cities":[
+    {"city_id":"1","city_name":"Bangalore","state_id":"12"},
+    {"city_id":"2","city_name":"Mangalore","state_id":"12"}
+
+ ]
+ },
+ {"state_id":"13","state_name":"Kerala","cities":[
+    {"city_id":"1","city_name":"Kochi","state_id":"13"},
+    {"city_id":"2","city_name":"Thrissur","state_id":"13"}
+ ]
+ },
+ {"state_id":"14","state_name":"Madhya Pradesh","cities":[
+    {"city_id":"1","city_name":"Indore","state_id":"14"},
+    {"city_id":"2","city_name":"Bhopal","state_id":"14"}
+ ]
+ },
+ {"state_id":"15","state_name":"Maharastra","cities":[
+    {"city_id":"1","city_name":"Aurangabad","state_id":"15"},
+    {"city_id":"2","city_name":"Pune","state_id":"15"},
+    {"city_id":"3","city_name":"Mumbai","state_id":"15"},
+    {"city_id":"4","city_name":"Nashik","state_id":"15"}
+]},
+ {"state_id":"16","state_name":"Manipur","cities":[]
+ },
+ {"state_id":"17","state_name":"Meghalaya","cities":[]
+ },
+ {"state_id":"18","state_name":"Mizoram","cities":[]
+ },
+ {"state_id":"19","state_name":"Nagaland","cities":[]
+ },
+ {"state_id":"20","state_name":"New delhi","cities":[
+    {"city_id":"1","city_name":"Delhi","state_id":"20"}
+ ]
+ },
+ {"state_id":"21","state_name":"Odisha","cities":[
+    {"city_id":"1","city_name":"Bhubaneshwar","state_id":"21"}
+ ]
+ },
+ {"state_id":"22","state_name":"Rajasthan","cities":[
+    {"city_id":"1","city_name":"Jaipur","state_id":"22"}
+ ]
+ },
+ {"state_id":"23","state_name":"Punjab","cities":[
+    {"city_id":"1","city_name":"Amritsar","state_id":"23"},
+    {"city_id":"2","city_name":"Ludhiana","state_id":"23"},
+    {"city_id":"3","city_name":"Mohali","state_id":"23"}
+
+]},
+ {"state_id":"24","state_name":"Sikkim","cities":[]
+ },
+ {"state_id":"25","state_name":"Tamil Nadu","cities":[
+    {"city_id":"1","city_name":"Chennai","state_id":"25"},
+    {"city_id":"2","city_name":"Coimbatore","state_id":"25"}
+
+ ]
+ },
+ {"state_id":"26","state_name":"Telangana","cities":[
+    {"city_id":"1","city_name":"Hyderabad","state_id":"26"}
+ ]
+ },
+ {"state_id":"27","state_name":"Tripura","cities":[]
+ },
+ {"state_id":"28","state_name":"Uttar Pradesh","cities":[
+    {"city_id":"1","city_name":"Lucknow","state_id":"28"},
+    {"city_id":"2","city_name":"Kanpur","state_id":"28"},
+    {"city_id":"3","city_name":"Noida","state_id":"28"},
+    {"city_id":"4","city_name":"Ghaziabad","state_id":"28"}
+
+
+
+ ]
+ },
+ {"state_id":"29","state_name":"Uttarakhand","cities":[
+    {"city_id":"1","city_name":"Dehradun","state_id":"29"}
+
+ ]
+ },
+ {"state_id":"30","state_name":"West Bengal","cities":[
+    {"city_id":"1","city_name":"Kolkatta","state_id":"30"}
+]
+ }
+]
