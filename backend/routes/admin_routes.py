@@ -385,10 +385,16 @@ def monthly_reports():
     monthly_report = []
     i=1
     while(i<=12):
+    if i==2:
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-28'"
+        elif i==4 or i == 6 or i == 8 :
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-30'"
+        else:
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
 
         #sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
 
-        sql = "SELECT 1 as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '2022-1-01' and DATE(service_to)<='2022-1-31'"
+        #sql = "SELECT 1 as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '2022-1-01' and DATE(service_to)<='2022-1-31'"
 
         cur.execute(sql)
         print(sql)
