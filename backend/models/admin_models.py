@@ -265,7 +265,7 @@ class Models:
     def monthview(vmonth):
         cur = mysql.connection.cursor()
 
-        sql = "SELECT `id`, `store_no`, `store_code`, `store_name`, `city`, `state`, `region`, `type`, `status_of_store`, `footage_m2`, `footage_ft2`, `separate_elec_billing`, `separate_dg_billing`, `bill_received_by_store___sent_direct_to_ho`, `bill_paid_direct_or_landlord`, `service_from`, `service_to`, `elec___kwh`, `dg___kwh`,  `hvac___kwh` from `user_tables`where `month` = %s "
+        sql = "SELECT `store_no`, `store_code`, `store_name`, `store_opening_date`, `city`, `state`, `region`, `type`, `status_of_store`, `footage_m2`, `footage_ft2`, `separate_elec_billing`, `separate_dg_billing`, `bill_received_by_store___sent_direct_to_ho`, `bill_paid_direct_or_landlord`, `service_from`, `service_to`, `elec___kwh`, `dg___kwh`,`hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg`, `month` FROM `user_tables` WHERE `month` = %s "
 
         cur.execute(sql,[vmonth])
         data = cur.fetchall()

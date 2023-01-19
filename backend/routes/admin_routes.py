@@ -385,23 +385,10 @@ def monthly_reports():
     monthly_report = []
     i=1
     while(i<=12):
-<<<<<<< HEAD
-        if i==2:
-=======
-    if i==2:
->>>>>>> f76ff0342cbbe6234849cd308102aa5c95f91ef1
-            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-28'"
-        elif i==4 or i == 6 or i == 8 :
-            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-30'"
-        else:
-            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
-<<<<<<< HEAD
-=======
 
-        #sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
->>>>>>> f76ff0342cbbe6234849cd308102aa5c95f91ef1
+        sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
 
-        #sql = "SELECT 1 as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '2022-1-01' and DATE(service_to)<='2022-1-31'"
+        # sql = "SELECT "+str(i)+" as month,`service_from`,`service_to` FROM user_tables where DATE(service_from) >= '2022-4-01' and DATE(service_to)<='2022-4-30'"
 
         cur.execute(sql)
         print(sql)
@@ -656,7 +643,6 @@ def quarterly_reports():
     
     # q1="SELECT DATE_FORMAT(`service_from`,'%d-%m-%Y') as service_from, DATE_FORMAT(`service_to`,'%d-%m-%Y') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-31'"
 
-    
     q1="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-31'"
     cur.execute(q1)
     d1=cur.fetchone()
