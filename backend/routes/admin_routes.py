@@ -647,6 +647,7 @@ def quarterly_reports():
     
     # q1="SELECT DATE_FORMAT(`service_from`,'%d-%m-%Y') as service_from, DATE_FORMAT(`service_to`,'%d-%m-%Y') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-31'"
 
+    
     q1="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-31'"
     cur.execute(q1)
     d1=cur.fetchone()
