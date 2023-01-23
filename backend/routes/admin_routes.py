@@ -386,11 +386,11 @@ def monthly_reports():
     i=1
     while(i<=12):
         if i==2:
-            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-28'"
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,updated_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-28'"
         elif i==4 or i == 6 or i == 9 or i == 11 :
-            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-30'"
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,updated_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-30'"
         else:
-            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,updated_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
 
 
         #sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
@@ -451,11 +451,11 @@ def reject():
 
     monthh =  request.form['month']
     approvee = request.form['approve']
-    approve_by = request.form['approved_by']
+    updated_by = request.form['updated_by']
     monthhh = request.form['rmonth']
 
     db.reject(monthh)
-    db.rejectapprove(approvee,approve_by,monthhh)
+    db.rejectapprove(approvee,updated_by,monthhh)
     return jsonify({'msg':'Month Rejected'})
 
 

@@ -308,12 +308,12 @@ class Models:
 
 
     #UPDATE APPROVE STATUS
-    def rejectapprove(approve,approved_by,rmonth):
+    def rejectapprove(approve,updated_by,rmonth):
         cur = mysql.connection.cursor()
 
-        sql = "UPDATE `user_tables` SET `approve_status`= %s,`approved_by`=%s WHERE `month`= %s"
+        sql = "UPDATE `user_tables` SET `approve_status`= %s,`updated_by`=%s WHERE `month`= %s"
     
-        data=cur.execute(sql,[approve,approved_by,rmonth])
+        data=cur.execute(sql,[approve,updated_by,rmonth])
         mysql.connection.commit()
         cur.close()
         return data
