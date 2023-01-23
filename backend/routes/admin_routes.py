@@ -385,8 +385,15 @@ def monthly_reports():
     monthly_report = []
     i=1
     while(i<=12):
+        if i==2:
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-28'"
+        elif i==4 or i == 6 or i == 9 or i == 11 :
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-30'"
+        else:
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
 
-        sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
+
+        #sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
 
         # sql = "SELECT "+str(i)+" as month,`service_from`,`service_to` FROM user_tables where DATE(service_from) >= '2022-4-01' and DATE(service_to)<='2022-4-30'"
 
@@ -641,9 +648,8 @@ def quarterly_reports():
     year = '2022'
     quarterly_report=[]
     
-    # q1="SELECT DATE_FORMAT(`service_from`,'%d-%m-%Y') as service_from, DATE_FORMAT(`service_to`,'%d-%m-%Y') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-31'"
 
-    q1="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-31'"
+    q1="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-30'"
     cur.execute(q1)
     d1=cur.fetchone()
     if d1:
@@ -651,7 +657,7 @@ def quarterly_reports():
         quarterly_report.append(d1)
         print(d1["service_from"])
 
-    q2="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where service_from >= '"+str(year)+"-07-01' and service_to<='"+str(year)+"-09-31'"
+    q2="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where service_from >= '"+str(year)+"-07-01' and service_to<='"+str(year)+"-09-30'"
     cur.execute(q2)
     d2=cur.fetchone()
     if d2:
