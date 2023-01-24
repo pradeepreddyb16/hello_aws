@@ -223,7 +223,7 @@ class Models:
 
         # sql = "SELECT april.`id`, april.`store_no`, april.`store_code`, april.`store_name`, april.`store_opening_date`, april.`city`, april.`state`, april.`region`, april.`type`, april.`status_of_store`,  april.`service_from`, june.`service_to`, (april.`elec___kwh`) as april_elec_kwh, (may.`elec___kwh`) as may_elec_kwh, (june.`elec___kwh`) as june_elec_kwh,(june.`elec___kwh`+may.`elec___kwh`+april.`elec___kwh`) as q2_elec_total, avg((june.`elec___kwh`+may.`elec___kwh`+april.`elec___kwh`)/3) as q2_average,(april.`dg___kwh`) as april_dg_kwh,(may.`dg___kwh`) as may_dg_kwh,(june.`dg___kwh`) as june_dg_kwh,(june.`dg___kwh`+may.`dg___kwh`+april.`dg___kwh`) as q2_dg_total, avg((june.`elec___kwh`+may.`elec___kwh`+april.`elec___kwh`)/3) as q2_dg_average FROM `06-2022` as june JOIN `05-2022` as may ON june.`store_no` = may.`store_no` JOIN `04-2022` as april ON may.`store_no`= april.`store_no` group by june.`store_no`,april.`store_no`,may.`store_no` order by april.id;"
 
-        sql = "SELECT `store_no`, `store_code`, `store_name`, `city`, `state`, `region` FROM `approved_month` WHERE DATE(service_from) >= %s and DATE(service_to)<= %s "
+        sql = "SELECT `store_no`, `store_code`, `store_name`, `city`, `state`, `region`,`footage_m2`, `footage_ft2`,`elec___kwh`,`dg___kwh`,`hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg` FROM `approved_month` WHERE DATE(service_from) >= %s and DATE(service_to)<= %s "
       
         cur.execute(sql,[serv_from,serv_to])
         data = cur.fetchall()
