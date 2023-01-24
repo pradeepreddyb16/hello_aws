@@ -693,7 +693,6 @@ def quarter():
     service_to = request.form['serv_to']
 
     data = db.quaterlydata(service_from,service_to)
-    
     return jsonify ({'status':True,'data':data})
 
 
@@ -708,7 +707,7 @@ def yearly_reports():
     year = '2022'
     yearly_report = []
     
-    sql = "SELECT DATE_FORMAT(MIN(`service_from`),'%d-%m-%Y') as service_from, DATE_FORMAT(MAX(`service_to`),'%d-%m-%Y') as service_to FROM approved_month where DATE(service_from) >= '"+str(year)+"-01-01' and DATE(service_to)<='"+str(year)+"-12-31'"
+    sql = "SELECT DATE_FORMAT(MIN(`service_from`),'%d-%m-%Y') as service_from, DATE_FORMAT(MAX(`service_to`),'%d-%m-%Y') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-01-01' and DATE(service_to)<='"+str(year)+"-12-31'"
 
     print(sql)
     cur.execute(sql)
@@ -721,24 +720,16 @@ def yearly_reports():
     return jsonify ({'status':True,'data':yearly_report})
 
 
-# YEARLY VIEW
-@api.route('/yearly_view',methods = ['GET','POST'])
-def yearly_view():
-    cur = mysql.connection.cursor()
-    #year = request.form['year'] 
-    year = '2022'
-    
-    # sql = "SELECT `store_no`, `store_code`, `store_name`, `store_opening_date`, `city`, `state`, `region`, `type`, `status_of_store`, `footage_m2`, `footage_ft2`, `separate_elec_billing`, `separate_dg_billing`, `bill_received_by_store___sent_direct_to_ho`, `bill_paid_direct_or_landlord`, `service_from`, `service_to`, `elec___kwh`, `service_from1`, `service_to1`, `dg___kwh`, `service_from2`, `service_to2`, `hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg`, `average_taken_as_no_update_from_store`, `change_in_sq_ft_in_the_store`, `store_closed`, `new_store`, `closed_store_due_to_lock_down`, `notes` FROM `approved_month`"
+#YEARLY VIEW
+@api.route('/yearly_view',methods = ['POST','GET'])
+def yearview():
 
-    sql ="SELECT `store_no`, `store_code`, `store_name`, `city`, `state`, `region`,`footage_m2`, `footage_ft2`,`elec___kwh`,`dg___kwh`,`hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg` FROM `approved_month`"
+    print(request.form)
+    service_from = request.form['serv_from']
+    service_to = request.form['serv_to']
 
-    cur.execute(sql)
-    print(sql)
-    data = cur.fetchall()
-    # print(data)
-    cur.close()
+    data = db.yearview(service_from,service_to)
     return jsonify ({'status':True,'data':data})
-
 
 ############### FOLLOW UP ###############
 
