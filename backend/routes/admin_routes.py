@@ -249,7 +249,17 @@ def AddStore():
             foot_ft2 = request.form['foot_ft2']
             added_date = getDateOnly()  # REPLACE IT WITH DATE AND TIME
             active_status = request.form['active_status']
-            db.addStore(store_no, code, uid, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2, added_date, active_status)        
+            tracker1 = request.form['tracker1']
+            tracker2 = request.form['tracker2']
+            tracker3 = request.form['tracker3']
+            tracker4 = request.form['tracker4']
+            tracker5 = request.form['tracker5']
+            tracker6 = request.form['tracker6']
+            tracker7 = request.form['tracker7']
+            tracker8 = request.form['tracker8']
+            tracker9 = request.form['tracker9']
+            tracker10 = request.form['tracker10']
+            db.addStore(store_no, code, uid, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2, added_date, active_status,tracker1,tracker2,tracker3,tracker4,tracker5,tracker6,tracker7,tracker8,tracker9,tracker10)        
             return jsonify({'status':True,'msg':"Store Created Successfully !!!"})
 
             ## IF ADDING BY STORE OWNER
@@ -268,7 +278,17 @@ def AddStore():
             foot_ft2 = request.form['foot_ft2']
             added_date = getDateOnly()  
             active_status = request.form['active_status']
-            db.addStore(store_no, code, uid, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2, added_date, active_status)        
+            tracker1 = request.form['tracker1']
+            tracker2 = request.form['tracker2']
+            tracker3 = request.form['tracker3']
+            tracker4 = request.form['tracker4']
+            tracker5 = request.form['tracker5']
+            tracker6 = request.form['tracker6']
+            tracker7 = request.form['tracker7']
+            tracker8 = request.form['tracker8']
+            tracker9 = request.form['tracker9']
+            tracker10 = request.form['tracker10']
+            db.addStore(store_no, code, uid, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2, added_date, active_status,tracker1,tracker2,tracker3,tracker4,tracker5,tracker6,tracker7,tracker8,tracker9,tracker10)        
             return jsonify({'status':True,'msg':"Store Created Successfully !!!"})
     else:
         return jsonify({'status':False,'msg':"Invalid Route !!!"})
@@ -340,8 +360,18 @@ def UpdateStore():
             foot_m2 = request.form['foot_m2'] 
             foot_ft2 = request.form['foot_ft2']  
             active_status = request.form['active_status']
+            tracker1 = request.form['tracker1']
+            tracker2 = request.form['tracker2']
+            tracker3 = request.form['tracker3']
+            tracker4 = request.form['tracker4']
+            tracker5 = request.form['tracker5']
+            tracker6 = request.form['tracker6']
+            tracker7 = request.form['tracker7']
+            tracker8 = request.form['tracker8']
+            tracker9 = request.form['tracker9']
+            tracker10 = request.form['tracker10']
             idd = request.form['store_id']
-            db.updateStore(store_no, code, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2,  active_status, idd) 
+            db.updateStore(store_no, code, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2,  active_status,tracker1,tracker2,tracker3,tracker4,tracker5,tracker6,tracker7,tracker8,tracker9,tracker10, idd) 
             return jsonify({'status':True,'msg':"Updated Successfully!!!"})
         
         # CHECK BEFORE UPDATE - CHECK IF STORE BELONGS TO SAME STORE OWNER
@@ -360,8 +390,18 @@ def UpdateStore():
                 foot_m2 = request.form['foot_m2'] 
                 foot_ft2 = request.form['foot_ft2']  
                 active_status = request.form['active_status']
+                tracker1 = request.form['tracker1']
+                tracker2 = request.form['tracker2']
+                tracker3 = request.form['tracker3']
+                tracker4 = request.form['tracker4']
+                tracker5 = request.form['tracker5']
+                tracker6 = request.form['tracker6']
+                tracker7 = request.form['tracker7']
+                tracker8 = request.form['tracker8']
+                tracker9 = request.form['tracker9']
+                tracker10 = request.form['tracker10']
                 idd = request.form['store_id']
-                db.updateStore(store_no, code, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2,  active_status, idd) 
+                db.updateStore(store_no, code, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2,  active_status,tracker1,tracker2,tracker3,tracker4,tracker5,tracker6,tracker7,tracker8,tracker9,tracker10, idd) 
                 return jsonify({'status':True,'msg':"Updated Successfully !!!"})
             else:
                 return jsonify({'status':False,'msg':"Invalid Route !!"})
@@ -379,23 +419,21 @@ months = ["January","February","March","April","May","June","July","August","Sep
 @api.route('/monthly_reports',methods = ['GET','POST'])
 def monthly_reports():
     cur = mysql.connection.cursor()
-    #year = request.form['year'] 
-    year = '2022'
+    year = request.form['year'] 
+    year1 = request.form['year1'] 
+    # year = '2022'
 
     monthly_report = []
     i=1
     while(i<=12):
         if i==2:
-            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,updated_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-28'"
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,updated_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year1)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year1)+"-"+str(i)+"-28'"
+        elif i ==1 or i ==3 :
+            sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,updated_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year1)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year1)+"-"+str(i)+"-31'"
         elif i==4 or i == 6 or i == 9 or i == 11 :
             sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,updated_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-30'"
         else:
             sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,updated_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
-
-
-        #sql = "SELECT "+str(i)+" as month,month as monthly,approve_status,approved_by,DATE_FORMAT(`service_from`,'%Y-%m-%d') as service_from,DATE_FORMAT(`service_to`,'%Y-%m-%d') as service_to FROM user_tables where DATE(service_from) >= '"+str(year)+"-"+str(i)+"-01' and DATE(service_to)<='"+str(year)+"-"+str(i)+"-31'"
-
-        # sql = "SELECT "+str(i)+" as month,`service_from`,`service_to` FROM user_tables where DATE(service_from) >= '2022-4-01' and DATE(service_to)<='2022-4-30'"
 
         cur.execute(sql)
         print(sql)
@@ -408,6 +446,7 @@ def monthly_reports():
         monthly['month_name'] = months[monthly['month']-1]
         print(monthly['month_name'])
     return jsonify ({'status':True,'data':monthly_report})
+    
 
 # MONTHLY VIEW
 @api.route('/monthly_view',methods = ['POST','GET'])
@@ -644,12 +683,13 @@ quarters = ["Q1","Q2","Q3","Q4"]
 @api.route('/quarterly_reports',methods = ['GET','POST'])
 def quarterly_reports():
     cur = mysql.connection.cursor()
-    #year = request.form['year'] 
+    year = request.form['year'] 
+    year1 = request.form['year1']
     year = '2022'
     quarterly_report=[]
     
 
-    q1="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-30'"
+    q1="SELECT DISTINCT(`month`),DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-30'"
     cur.execute(q1)
     d1=cur.fetchone()
     if d1:
@@ -669,15 +709,13 @@ def quarterly_reports():
     d3=cur.fetchone()
     if d3:
         d3["quarter"]="Q3"
-
         quarterly_report.append(d3)
 
-    q4="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where service_from >= '"+str(year)+"-01-01' and service_to<='"+str(year)+"-03-31'"
+    q4="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where service_from >= '"+str(year1)+"-01-01' and service_to<='"+str(year1)+"-03-31'"
     cur.execute(q4)
     d4=cur.fetchone()
     if d4:
         d4["quarter"]="Q4"
-
         quarterly_report.append(d4)
 
     cur.close()
@@ -703,18 +741,19 @@ def quarter():
 @api.route('/yearly_reports',methods = ['GET','POST'])
 def yearly_reports():
     cur = mysql.connection.cursor()
-    #year = request.form['year'] 
-    year = '2022'
+    year = request.form['year']
+    year1 = request.form['year1'] 
+    # year = '2022'
     yearly_report = []
     
-    sql = "SELECT DATE_FORMAT(MIN(`service_from`),'%d-%m-%Y') as service_from, DATE_FORMAT(MAX(`service_to`),'%d-%m-%Y') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-01-01' and DATE(service_to)<='"+str(year)+"-12-31'"
+    sql = "SELECT DATE_FORMAT(MIN(`service_from`),'%d-%m-%Y') as service_from, DATE_FORMAT(MAX(`service_to`),'%d-%m-%Y') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to)<='"+str(year1)+"-03-31'"
 
     print(sql)
     cur.execute(sql)
     data = cur.fetchone()
     print(data)
     if data:
-        data["year"] = '2022'
+        # data["year"] = '2022'
         yearly_report.append(data)
         print(yearly_report)
     return jsonify ({'status':True,'data':yearly_report})
@@ -736,7 +775,7 @@ def yearview():
 
 # FETCH FOLLOW UP MONTHLY 
 @api.route('/follow_monthly',methods = ['POST','GET'])
-def followmointhly():
+def followmonthly():
 
     month = request.form['month']
     print(month)
@@ -754,6 +793,9 @@ def followsavee():
         if session['admin_data']['admin_role']==1:
             
             # store_no = request.form['store_no']
+            poc_name = request.form['poc_name']
+            poc_mobile = request.form['poc_mobile']
+            poc_email = request.form['poc_email']
             follow1 = request.form['follow1'] 
             follow2 = request.form['follow2'] 
             follow3 = request.form['follow3']
@@ -762,7 +804,7 @@ def followsavee():
             sno = request.form['store_no']
             monthh = request.form['month']
 
-            db.updateFollow(follow1, follow2, follow3, bill_paid, mms, sno, monthh) 
+            db.updateFollow(poc_name,poc_mobile,poc_email,follow1, follow2, follow3, bill_paid, mms, sno, monthh) 
     return jsonify({'status':True,'msg':"Updated Successfully!!!"})
 
 

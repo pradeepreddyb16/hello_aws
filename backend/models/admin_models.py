@@ -170,7 +170,7 @@ class Models:
     def getAllStoresByUID(uid):
         cur = mysql.connection.cursor()
 
-        sql = "SELECT `store_id`,`store_no`,`store_code`,`user_ids`,`store_name`,`opening_date`,`store_city`,`store_state`,`store_region`,`store_type`,`store_status`,`store_foot_m2`,`store_foot_ft2`,`added_date`,`active_status` FROM `stores` where `user_ids` = %s order by id desc"
+        sql = "SELECT `store_id`,`store_no`,`store_code`,`user_ids`,`store_name`,`opening_date`,`store_city`,`store_state`,`store_region`,`store_type`,`store_status`,`store_foot_m2`,`store_foot_ft2`,`added_date`,`active_status`, `tracker1`, `tracker2`, `tracker3`, `tracker4`, `tracker5`, `tracker6`, `tracker7`, `tracker8`, `tracker9`, `tracker10` FROM `stores` where `user_ids` = %s order by id desc"
 
         cur.execute(sql,[uid])
         data = cur.fetchall()
@@ -179,23 +179,24 @@ class Models:
 
 
     ## CREATE STORE
-    def addStore(store_no, code, uid, name, open_date,city,state, region, type, status,foot_m2, foot_ft2, added_date, active_status):
+    def addStore(store_no, code, uid, name, open_date,city,state, region, type, status,foot_m2, foot_ft2, added_date, active_status,tracker1,tracker2,tracker3,tracker4,tracker5,tracker6,tracker7,tracker8,tracker9,tracker10):
         cur = mysql.connection.cursor()
         
-        sql="INSERT INTO `stores`( `store_no`, `store_code`, `user_ids`, `store_name`, `opening_date`, `store_city`, `store_state`, `store_region`, `store_type`, `store_status`, `store_foot_m2`, `store_foot_ft2`, `added_date`, `active_status`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        sql="INSERT INTO `stores`( `store_no`, `store_code`, `user_ids`, `store_name`, `opening_date`, `store_city`, `store_state`, `store_region`, `store_type`, `store_status`, `store_foot_m2`, `store_foot_ft2`, `added_date`, `active_status`, `tracker1`, `tracker2`, `tracker3`, `tracker4`, `tracker5`, `tracker6`, `tracker7`, `tracker8`, `tracker9`, `tracker10`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 
 
-        cur.execute(sql,[store_no, code, uid, name, open_date,city,state, region, type, status,foot_m2, foot_ft2, added_date, active_status])
+        cur.execute(sql,[store_no, code, uid, name, open_date,city,state, region, type, status,foot_m2, foot_ft2, added_date, active_status,tracker1,tracker2,tracker3,tracker4,tracker5,tracker6,tracker7,tracker8,tracker9,tracker10])
         mysql.connection.commit()
         cur.close()
 
+
     ## UPDATE STORE WITH STORE ID 
-    def updateStore(store_no, code, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2,  active_status, idd):
+    def updateStore(store_no, code, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2,  active_status,tracker1,tracker2,tracker3,tracker4,tracker5,tracker6,tracker7,tracker8,tracker9,tracker10, idd):
         cur = mysql.connection.cursor()
 
-        sql = "UPDATE `stores` SET  `store_no`=%s,`store_code`=%s ,`store_name`=%s,`opening_date`=%s,`store_city`=%s,`store_state`=%s,`store_region`=%s,`store_type`=%s,`store_status`=%s,`store_foot_m2`=%s,`store_foot_ft2`=%s ,`active_status`=%s WHERE `store_id`=%s"
+        sql = "UPDATE `stores` SET  `store_no`=%s,`store_code`=%s ,`store_name`=%s,`opening_date`=%s,`store_city`=%s,`store_state`=%s,`store_region`=%s,`store_type`=%s,`store_status`=%s,`store_foot_m2`=%s,`store_foot_ft2`=%s ,`active_status`=%s, `tracker1`=%s, `tracker2`=%s, `tracker3`=%s, `tracker4`=%s, `tracker5`=%s, `tracker6`=%s, `tracker7`=%s, `tracker8`=%s, `tracker9`=%s, `tracker10`=%s WHERE `store_id`=%s"
 
-        cur.execute(sql,[store_no, code, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2, active_status, idd])
+        cur.execute(sql,[store_no, code, name, open_date,city,state, region, typee, status,foot_m2, foot_ft2, active_status,tracker1,tracker2,tracker3,tracker4,tracker5,tracker6,tracker7,tracker8,tracker9,tracker10,idd])
         mysql.connection.commit()
         cur.close()
         
@@ -223,7 +224,7 @@ class Models:
 
         # sql = "SELECT april.`id`, april.`store_no`, april.`store_code`, april.`store_name`, april.`store_opening_date`, april.`city`, april.`state`, april.`region`, april.`type`, april.`status_of_store`,  april.`service_from`, june.`service_to`, (april.`elec___kwh`) as april_elec_kwh, (may.`elec___kwh`) as may_elec_kwh, (june.`elec___kwh`) as june_elec_kwh,(june.`elec___kwh`+may.`elec___kwh`+april.`elec___kwh`) as q2_elec_total, avg((june.`elec___kwh`+may.`elec___kwh`+april.`elec___kwh`)/3) as q2_average,(april.`dg___kwh`) as april_dg_kwh,(may.`dg___kwh`) as may_dg_kwh,(june.`dg___kwh`) as june_dg_kwh,(june.`dg___kwh`+may.`dg___kwh`+april.`dg___kwh`) as q2_dg_total, avg((june.`elec___kwh`+may.`elec___kwh`+april.`elec___kwh`)/3) as q2_dg_average FROM `06-2022` as june JOIN `05-2022` as may ON june.`store_no` = may.`store_no` JOIN `04-2022` as april ON may.`store_no`= april.`store_no` group by june.`store_no`,april.`store_no`,may.`store_no` order by april.id;"
 
-        sql = "SELECT `store_no`, `store_code`, `store_name`, `city`, `state`, `region`,SUM(`footage_m2`) as sum_footagem2,AVG(`footage_m2`) as avg_footagem2,SUM(`footage_ft2`) as sum_footageft2,AVG(`footage_ft2`) as avg_footageft2,SUM(`elec___kwh`) as sum_elec_kwh, AVG(`elec___kwh`) as avg_elec_kwh,SUM(`dg___kwh`) as sum_dg_kwh,AVG(`dg___kwh`) as avg_dg_kwh,SUM(`hvac___kwh`) as sum_hvac_kwh,AVG(`hvac___kwh`) as avg_hvac_kwh, SUM(`r22___kg`) as sum_r22_kg,AVG(`r22___kg`) as avg_r22_kg, SUM(`r404___kg`) as sum_r404_kg,AVG(`r404___kg`) as avg_r404_kg, SUM(`r407___kg`) as sum_r407_kg,AVG(`r407___kg`) as avg_r407_kg, SUM(`other___kg`) as sum_other_kg,AVG(`other___kg`) as avg_other_kg FROM `approved_month` WHERE DATE(service_from) >= %s and DATE(service_to)<= %s GROUP BY store_code "
+        sql = "SELECT `store_no`,`month`, `store_code`, `store_name`, `city`, `state`, `region`,CAST(SUM(`footage_m2`) AS DECIMAL(10,2) ) as sum_footagem2,CAST(AVG(`footage_m2`) AS DECIMAL(10,2)) as avg_footagem2,CAST(SUM(`footage_ft2`) AS DECIMAL(10,2)) as sum_footageft2,CAST(AVG(`footage_ft2`) AS DECIMAL(10,2)) as avg_footageft2,CAST(SUM(`elec___kwh`) AS DECIMAL(10,2)) as sum_elec_kwh, CAST(AVG(`elec___kwh`) AS DECIMAL(10,2)) as avg_elec_kwh,CAST(SUM(`dg___kwh`) AS DECIMAL(10,2)) as sum_dg_kwh,CAST(AVG(`dg___kwh`) AS DECIMAL(10,2)) as avg_dg_kwh,CAST(SUM(`hvac___kwh`) AS DECIMAL(10,2)) as sum_hvac_kwh,CAST(AVG(`hvac___kwh`) AS DECIMAL(10,2)) as avg_hvac_kwh, CAST(SUM(`r22___kg`) AS DECIMAL(10,2)) as sum_r22_kg,CAST(AVG(`r22___kg`) AS DECIMAL(10,2)) as avg_r22_kg, CAST(SUM(`r404___kg`) AS DECIMAL(10,2)) as sum_r404_kg,CAST(AVG(`r404___kg`) AS DECIMAL(10,2)) as avg_r404_kg, CAST(SUM(`r407___kg`) AS DECIMAL(10,2)) as sum_r407_kg,CAST(AVG(`r407___kg`) AS DECIMAL(10,2))as avg_r407_kg, CAST(SUM(`other___kg`) AS DECIMAL(10,2)) as sum_other_kg,CAST(AVG(`other___kg`) AS DECIMAL(10,2)) as avg_other_kg FROM `approved_month` WHERE DATE(service_from) >= %s and DATE(service_to)<= %s GROUP BY store_code "
       
         cur.execute(sql,[serv_from,serv_to])
         data = cur.fetchall()
@@ -234,7 +235,7 @@ class Models:
     def yearview(serv_from,serv_to):
         cur = mysql.connection.cursor()
 
-        sql = "SELECT `store_no`, `store_code`, `store_name`, `city`, `state`, `region`,SUM(`footage_m2`) as sum_footagem2,AVG(`footage_m2`) as avg_footagem2,SUM(`footage_ft2`) as sum_footageft2,AVG(`footage_ft2`) as avg_footageft2,SUM(`elec___kwh`) as sum_elec_kwh, AVG(`elec___kwh`) as avg_elec_kwh,SUM(`dg___kwh`) as sum_dg_kwh,AVG(`dg___kwh`) as avg_dg_kwh,SUM(`hvac___kwh`) as sum_hvac_kwh,AVG(`hvac___kwh`) as avg_hvac_kwh, SUM(`r22___kg`) as sum_r22_kg,AVG(`r22___kg`) as avg_r22_kg, SUM(`r404___kg`) as sum_r404_kg,AVG(`r404___kg`) as avg_r404_kg, SUM(`r407___kg`) as sum_r407_kg,AVG(`r407___kg`) as avg_r407_kg, SUM(`other___kg`) as sum_other_kg,AVG(`other___kg`) as avg_other_kg FROM `user_tables` WHERE DATE(service_from) >= %s and DATE(service_to)<= %s GROUP BY store_code;"
+        sql = "SELECT `store_no`,`month`, `store_code`, `store_name`, `city`, `state`, `region`,CAST(SUM(`footage_m2`) AS DECIMAL(10,2) ) as sum_footagem2,CAST(AVG(`footage_m2`) AS DECIMAL(10,2)) as avg_footagem2,CAST(SUM(`footage_ft2`) AS DECIMAL(10,2)) as sum_footageft2,CAST(AVG(`footage_ft2`) AS DECIMAL(10,2)) as avg_footageft2,CAST(SUM(`elec___kwh`) AS DECIMAL(10,2)) as sum_elec_kwh, CAST(AVG(`elec___kwh`) AS DECIMAL(10,2)) as avg_elec_kwh,CAST(SUM(`dg___kwh`) AS DECIMAL(10,2)) as sum_dg_kwh,CAST(AVG(`dg___kwh`) AS DECIMAL(10,2)) as avg_dg_kwh,CAST(SUM(`hvac___kwh`) AS DECIMAL(10,2)) as sum_hvac_kwh,CAST(AVG(`hvac___kwh`) AS DECIMAL(10,2)) as avg_hvac_kwh, CAST(SUM(`r22___kg`) AS DECIMAL(10,2)) as sum_r22_kg,CAST(AVG(`r22___kg`) AS DECIMAL(10,2)) as avg_r22_kg, CAST(SUM(`r404___kg`) AS DECIMAL(10,2)) as sum_r404_kg,CAST(AVG(`r404___kg`) AS DECIMAL(10,2)) as avg_r404_kg, CAST(SUM(`r407___kg`) AS DECIMAL(10,2)) as sum_r407_kg,CAST(AVG(`r407___kg`) AS DECIMAL(10,2))as avg_r407_kg, CAST(SUM(`other___kg`) AS DECIMAL(10,2)) as sum_other_kg,CAST(AVG(`other___kg`) AS DECIMAL(10,2)) as avg_other_kg FROM `approved_month` WHERE DATE(service_from) >= %s and DATE(service_to)<= %s GROUP BY store_code"
       
         cur.execute(sql,[serv_from,serv_to])
         data = cur.fetchall()
@@ -276,7 +277,10 @@ class Models:
     def monthview(vmonth):
         cur = mysql.connection.cursor()
 
-        sql = "SELECT `store_no`, `store_code`, `store_name`, `store_opening_date`, `city`, `state`, `region`, `type`, `status_of_store`, `footage_m2`, `footage_ft2`, `separate_elec_billing`, `separate_dg_billing`, `bill_received_by_store___sent_direct_to_ho`, `bill_paid_direct_or_landlord`, `service_from`, `service_to`, `elec___kwh`, `dg___kwh`,`hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg`, `month` FROM `user_tables` WHERE `month` = %s "
+        # sql = "SELECT `store_no`, `store_code`, `store_name`,date_format(`store_opening_date`,'%%Y-%%m-%%d') as store_opening_date, `city`, `state`, `region`, `type`, `status_of_store`, `footage_m2`, `footage_ft2`, `separate_elec_billing`, `separate_dg_billing`, `bill_received_by_store___sent_direct_to_ho`, `bill_paid_direct_or_landlord`, `service_from`, `service_to`, `elec___kwh`, `dg___kwh`,`hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg`, `month` FROM `user_tables` WHERE `month` = %s "
+        
+        sql = "SELECT `store_no`, `store_code`, `store_name`, date_format(`store_opening_date`,'%%Y-%%m-%%d') as store_opening_date, `city`, `state`, `region`, `type`, `status_of_store`, `footage_m2`, `footage_ft2`, `separate_elec_billing`, `separate_dg_billing`, `bill_received_by_store___sent_direct_to_ho`, `bill_paid_direct_or_landlord`, date_format(`service_from`,'%%Y-%%m-%%d') as service_from, date_format(`service_to`,'%%Y-%%m-%%d') as service_to, `elec___kwh`, `dg___kwh`,`hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg`, `month` FROM `user_tables` WHERE `month` = %s "
+
 
         cur.execute(sql,[vmonth])
         data = cur.fetchall()
@@ -344,14 +348,14 @@ class Models:
  
 
 # UPDATE STORE WITH STORE ID
-    def updateFollow(follow1,follow2,follow3,bill_paid,mms,sno, month):
+    def updateFollow(pocname,pocmobile,pocemail,follow1,follow2,follow3,bill_paid,mms,sno, month):
         cur = mysql.connection.cursor()
 
         # sql = "UPDATE `follow` SET `follow1`=%s,`follow2`=%s,`follow3`=%s,`bill_paid`=%s,`notes`=%s WHERE `store_no`=%s "
 
-        sql = "UPDATE `user_tables` SET `follow1`=%s,`follow2`=%s,`follow3`=%s,`bill_paid`=%s,`mms`=%s WHERE `store_no`=%s AND `month`=%s"
+        sql = "UPDATE `user_tables` SET `poc_name` = %s,`poc_mobile` = %s,`poc_email` = %s,`follow1`=%s,`follow2`=%s,`follow3`=%s,`bill_paid`=%s,`mms`=%s WHERE `store_no`=%s AND `month`=%s"
         
-        cur.execute(sql,[follow1,follow2,follow3,bill_paid,mms,sno, month])
+        cur.execute(sql,[pocname,pocmobile,pocemail,follow1,follow2,follow3,bill_paid,mms,sno, month])
         mysql.connection.commit()
         cur.close()          
 
@@ -362,7 +366,7 @@ class Models:
 
         # sql = "SELECT `id`, `store_no`, `store_code`, `store_name`, `poc_name`, `poc_no`, `poc_email`, `follow1`, `follow2`, `follow3`, `bill_paid`, `notes` FROM `follow`"
 
-        sql = "SELECT `id`, `store_no`, `store_code`, `store_name`, `follow1`, `follow2`, `follow3`, `bill_paid`, `mms` FROM `user_tables` WHERE `month` = %s "
+        sql = "SELECT `id`, `store_no`, `store_code`, `store_name`,`poc_name`,`poc_mobile`,`poc_email`, `follow1`, `follow2`, `follow3`, `bill_paid`, `mms` FROM `user_tables` WHERE `month` = %s "
         
         cur.execute(sql,[month])
         data = cur.fetchall()
@@ -419,14 +423,5 @@ class Models:
         mysql.connection.commit()
         cur.close()
 
-    # # yearly view
-    # def yearview(uname):
-    #     cur=mysql.connection.cursor()
-        
-    #     sql = "SELECT `store_no`, `store_code`, `store_name`, `city`, `state`, `region`,SUM(`footage_m2`) as sum_footagem2,AVG(`footage_m2`) as avg_footagem2,SUM(`footage_ft2`) as sum_footageft2,AVG(`footage_ft2`) as avg_footageft2,SUM(`elec___kwh`) as sum_elec_kwh, AVG(`elec___kwh`) as avg_elec_kwh,SUM(`dg___kwh`) as sum_dg_kwh,AVG(`dg___kwh`) as avg_dg_kwh,SUM(`hvac___kwh`) as sum_hvac_kwh,AVG(`hvac___kwh`) as avg_hvac_kwh, SUM(`r22___kg`) as sum_r22_kg,AVG(`r22___kg`) as avg_r22_kg, SUM(`r404___kg`) as sum_r404_kg,AVG(`r404___kg`) as avg_r404_kg, SUM(`r407___kg`) as sum_r407_kg,AVG(`r407___kg`) as avg_r407_kg, SUM(`other___kg`) as sum_other_kg,AVG(`other___kg`) as avg_other_kg FROM `approved_month` WHERE DATE(service_from) >= %s and DATE(service_to)<= %s GROUP BY store_code "
-
-    #     cur.execute(sql,[uname])
-    #     data = cur.fetchone()
-    #     return data
-
+    
 
