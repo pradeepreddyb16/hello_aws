@@ -231,6 +231,31 @@ class Models:
         cur.close()
         return data
 
+
+#QUARTERLY VIEW1
+    def quaterlydata1(month1,month2,month3):
+        cur = mysql.connection.cursor()
+
+
+        sql = "SELECT store_no, store_code, store_name, city, state, region,SUM(CASE WHEN month = '"+month1+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month1_elec_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month2_elec_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month3_elec_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month1_dg_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month2_dg_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month3_dg_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month1_hvac_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month2_hvac_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month3_hvac_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month1_r22_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month2_r22_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month3_r22_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month1_r404_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month2_r404_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month3_r404_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month1_r407_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month2_r407_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month3_r407_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month1_other_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month2_other_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month3_other_kg FROM approved_month WHERE month IN (%s, %s, %s) GROUP BY store_code ORDER BY store_code; "
+      
+        cur.execute(sql,[month1,month2,month3])
+        data = cur.fetchall()
+        cur.close()
+        return data
+
+
+#QUARTERLY MONTH DATA VIEW
+    def quaterlymonthlydata(serv_from,serv_to):
+        cur = mysql.connection.cursor()
+
+        sql = "SELECT `store_no`,`month`, `store_code`, `store_name`, `city`, `state`, `region`,CAST(SUM(`footage_m2`) AS DECIMAL(10,2) ) as sum_footagem2,CAST(AVG(`footage_m2`) AS DECIMAL(10,2)) as avg_footagem2,CAST(SUM(`footage_ft2`) AS DECIMAL(10,2)) as sum_footageft2,CAST(AVG(`footage_ft2`) AS DECIMAL(10,2)) as avg_footageft2,CAST(SUM(`elec___kwh`) AS DECIMAL(10,2)) as sum_elec_kwh, CAST(AVG(`elec___kwh`) AS DECIMAL(10,2)) as avg_elec_kwh,CAST(SUM(`dg___kwh`) AS DECIMAL(10,2)) as sum_dg_kwh,CAST(AVG(`dg___kwh`) AS DECIMAL(10,2)) as avg_dg_kwh,CAST(SUM(`hvac___kwh`) AS DECIMAL(10,2)) as sum_hvac_kwh,CAST(AVG(`hvac___kwh`) AS DECIMAL(10,2)) as avg_hvac_kwh, CAST(SUM(`r22___kg`) AS DECIMAL(10,2)) as sum_r22_kg,CAST(AVG(`r22___kg`) AS DECIMAL(10,2)) as avg_r22_kg, CAST(SUM(`r404___kg`) AS DECIMAL(10,2)) as sum_r404_kg,CAST(AVG(`r404___kg`) AS DECIMAL(10,2)) as avg_r404_kg, CAST(SUM(`r407___kg`) AS DECIMAL(10,2)) as sum_r407_kg,CAST(AVG(`r407___kg`) AS DECIMAL(10,2))as avg_r407_kg, CAST(SUM(`other___kg`) AS DECIMAL(10,2)) as sum_other_kg,CAST(AVG(`other___kg`) AS DECIMAL(10,2)) as avg_other_kg FROM `approved_month` WHERE DATE(service_from) >= %s and DATE(service_to)<= %s GROUP BY store_code "
+      
+        cur.execute(sql,[serv_from,serv_to])
+        data = cur.fetchall()
+        cur.close()
+        return data
+
     #YEARLY VIEW
     def yearview(serv_from,serv_to):
         cur = mysql.connection.cursor()
@@ -286,6 +311,9 @@ class Models:
         data = cur.fetchall()
         cur.close()
         return data
+
+
+        
         
 
     # APPROVE MONTH
@@ -423,5 +451,19 @@ class Models:
         mysql.connection.commit()
         cur.close()
 
+
+############### bills upload ###############
+
+
+ # UPLOAD BILLS
+    def billupload(billmonth,billname,uploaddate):
+        cur = mysql.connection.cursor()
+
+        sql = "INSERT INTO `bills`(`bill_month`, `bill_name`,`upload_date`) VALUES (%s,%s,%s)"
+
+        data=cur.execute(sql,[billmonth,billname,uploaddate])
+        mysql.connection.commit()
+        cur.close()
+        return data
     
 

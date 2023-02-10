@@ -42,7 +42,7 @@ def uploadImage(pic, directory):
         now.year, now.month, now.day, now.hour, now.minute, now.second)
     datetimee = str(datetimeee)
     ranNew = str(random.randint(00000, 99999))
-    UPLOAD_FOLDER = "bills/"+directory+"/"
+    UPLOAD_FOLDER = "data/"+directory+"/"
     ALLOWED_EXTENSIONS = set(
         ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xlsx', 'base64','csv','xlsx','xls'])
     if pic.filename == 'blob':
@@ -56,6 +56,29 @@ def uploadImage(pic, directory):
     picfilename = picfilename.replace(",", "")
     pic.save(os.path.join(UPLOAD_FOLDER, picfilename))
     return picfilename
+
+
+# FOR UPLOAD BILLS
+def uploadBills(pic, directory):
+    now = datetime.datetime.now(timezone('Asia/Kolkata'))
+    datetimeee = datetime.datetime(
+        now.year, now.month, now.day, now.hour, now.minute, now.second)
+    datetimee = str(datetimeee)
+    ranNew = str(random.randint(00000, 99999))
+    UPLOAD_FOLDER = "static/"+directory+"/"
+    ALLOWED_EXTENSIONS = set(
+        ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xlsx', 'base64'])
+    if pic.filename == 'blob':
+        picfilename = datetimee+ranNew+pic.filename+ALLOWED_EXTENSIONS
+    else:
+        picfilename = datetimee+ranNew+pic.filename
+    picfilename = picfilename.replace(":", "")
+    picfilename = picfilename.replace("-", "")
+    picfilename = picfilename.replace(" ", "")
+    picfilename = picfilename.replace(",", "")
+    pic.save(os.path.join(UPLOAD_FOLDER, picfilename))
+    return picfilename
+
 
 
 # ROUTE FOR LOGIN
@@ -689,10 +712,40 @@ def quarterly_reports():
     quarterly_report=[]
     
 
-    q1="SELECT DISTINCT(`month`),DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-30'"
-    cur.execute(q1)
+    # q1="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-30'"
+
+    q1 = "SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from, DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to, MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month WHERE DATE(service_from) >= '"+str(year)+"-04-01' AND DATE(service_to) <= '"+str(year)+"-06-30';"
+
+    q11 = "SELECT `month` FROM approved_month WHERE DATE(service_from) >= '"+str(year)+"-04-01' AND DATE(service_to) <= '"+str(year)+"-06-30' GROUP BY `month`;"
+
+    a1 = cur.execute(q1)
     d1=cur.fetchone()
-    if d1:
+    a2 = cur.execute(q11)
+    d2=cur.fetchall()
+    
+    if d1 and d2:
+        # d1["month1"] = ""
+        # d1["month1"] = d2[0]["month"]
+        # d1["month2"] = d2[1]["month"]
+        # d1["month3"] = d2[2]["month"]
+        s1 = len(d2)
+        if s1:
+            s1 -= 1
+            d1["month1"] = d2[0]["month"]
+        if s1:
+            s1 -= 1
+            d1["month2"] = d2[1]["month"]
+        if s1:
+            s1 -= 1
+            d1["month3"] = d2[2]["month"]
+
+        # for d in d2:
+        #     if d1["month1"] == "":
+        #         d1["month1"] = d["month"]
+        #     elif d1["month2"] == "":
+        #         d1["month2"] = d["month"]
+        #     elif d1["month3"] == "":
+        #         d1["month3"] = d["month"]
         d1["quarter"]="Q1"
         quarterly_report.append(d1)
         print(d1["service_from"])
@@ -731,6 +784,19 @@ def quarter():
     service_to = request.form['serv_to']
 
     data = db.quaterlydata(service_from,service_to)
+    return jsonify ({'status':True,'data':data})
+
+
+#QUARTERLY VIEW
+@api.route('/quarterly_view1',methods = ['POST','GET'])
+def quarter1():
+
+    month1 = request.form['month1']
+    month2 = request.form['month2']
+    month3 = request.form['month3']
+    
+
+    data = db.quaterlydata1(month1,month2,month3)
     return jsonify ({'status':True,'data':data})
 
 
@@ -862,3 +928,19 @@ def forgetpassword():
     # passs = request.form['pas']
     db.forgotpass(passs,maill)
     return jsonify({'status':True,'msg': 'password updated'})
+
+
+############### bills upload ###############
+
+
+# UPLOAD BILLS
+@api.route('/upload_bills', methods=['GET', 'POST'])
+def uploadbills():
+    
+    billmonth =  request.form['billmonth']
+    billname = uploadBills(request.files['billname'], 'uploads')
+    uploaddate = getDateOnly()
+
+    db.billupload(billmonth,billname,uploaddate)
+    
+    return jsonify({'status': True, "msg": 'bill uploaded sucessfully'})
