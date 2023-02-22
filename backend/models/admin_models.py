@@ -1,6 +1,6 @@
 from extensions import mysql
 from flask import request,jsonify
-
+import json
 
 
 class Models:
@@ -233,17 +233,55 @@ class Models:
 
 
 #QUARTERLY VIEW1
-    def quaterlydata1(month1,month2,month3):
+    def quaterlydata1(month1):
         cur = mysql.connection.cursor()
 
 
-        sql = "SELECT store_no, store_code, store_name, city, state, region,SUM(CASE WHEN month = '"+month1+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month1_elec_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month2_elec_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month3_elec_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month1_dg_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month2_dg_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month3_dg_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month1_hvac_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month2_hvac_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month3_hvac_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month1_r22_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month2_r22_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month3_r22_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month1_r404_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month2_r404_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month3_r404_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month1_r407_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month2_r407_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month3_r407_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month1_other_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month2_other_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month3_other_kg FROM approved_month WHERE month IN (%s, %s, %s) GROUP BY store_code ORDER BY store_code; "
+        sql = "SELECT store_no, store_code, store_name, city, state, region,SUM(CASE WHEN month = '"+month1+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month1_elec_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month1_dg_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month1_hvac_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month1_r22_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month1_r404_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month1_r407_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month1_other_kg FROM approved_month WHERE month IN (%s) GROUP BY store_code ORDER BY store_code; "
       
-        cur.execute(sql,[month1,month2,month3])
+        cur.execute(sql,[month1])
         data = cur.fetchall()
         cur.close()
         return data
 
+
+#QUARTERLY VIEW2
+    def quaterlydata2(month1,month2):
+        cur = mysql.connection.cursor()
+
+
+        sql = "SELECT store_no, store_code, store_name, city, state, region,SUM(CASE WHEN month = '"+month1+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month1_elec_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month2_elec_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month1_dg_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month2_dg_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month1_hvac_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month2_hvac_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month1_r22_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month2_r22_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month1_r404_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month2_r404_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month1_r407_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month2_r407_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month1_other_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month2_other_kg FROM approved_month WHERE month IN (%s, %s) GROUP BY store_code ORDER BY store_code; "
+      
+        cur.execute(sql,[month1,month2])
+        data = cur.fetchall()
+        cur.close()
+        return data
+
+
+    #QUARTERLY VIEW3
+    def quaterlydata3(month1,month2,month3):
+        cur = mysql.connection.cursor()
+
+
+       
+
+        sql = "SELECT store_no, store_code, store_name, city, state, region,SUM(CASE WHEN month = '"+month1+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month1_elec_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month2_elec_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month3_elec_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month1_dg_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month2_dg_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month3_dg_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month1_hvac_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month2_hvac_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month3_hvac_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month1_r22_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month2_r22_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month3_r22_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month1_r404_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month2_r404_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month3_r404_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month1_r407_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month2_r407_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month3_r407_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month1_other_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month2_other_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month3_other_kg FROM approved_month WHERE month IN (%s, %s, %s) GROUP BY store_code ORDER BY store_code; "
+      
+
+        # num_months = 3  # set the number of months to include
+        # months = [month1, month2, month3][:num_months]  # generate a list of month strings
+        # sql_months = ",".join(["SUM(CASE WHEN month = '{0}' THEN CAST((elec___kwh) AS DECIMAL(10,2)) END) AS month{1}_elec_kwh,SUM(CASE WHEN month = '{0}' THEN CAST((dg___kwh) AS DECIMAL(10,2)) END) AS month{1}_dg_kwh,SUM(CASE WHEN month = '{0}' THEN CAST((hvac___kwh) AS DECIMAL(10,2)) END) AS month{1}_hvac_kwh,SUM(CASE WHEN month = '{0}' THEN CAST((r22___kg) AS DECIMAL(10,2)) END) AS month{1}_r22_kg,SUM(CASE WHEN month = '{0}' THEN CAST((r404___kg) AS DECIMAL(10,2)) END) AS month{1}_r404_kg,SUM(CASE WHEN month = '{0}' THEN CAST((r407___kg) AS DECIMAL(10,2)) END) AS month{1}_r407_kg,SUM(CASE WHEN month = '{0}' THEN CAST((other___kg) AS DECIMAL(10,2)) END) AS month{1}_other_kg".format(month, i+1) for i, month in enumerate(months)])
+        # sql_in = ",".join(["%s" for _ in range(num_months)])  # generate placeholders for the IN clause
+
+        # sql = f"SELECT store_no, store_code, store_name, city, state, region,{sql_months} FROM approved_month WHERE month IN ({sql_in}) GROUP BY store_code ORDER BY store_code;"
+
+        # print(sql)
+
+
+        cur.execute(sql,[month1,month2,month3])
+        data = cur.fetchall()
+        cur.close()
+        return data
 
 #QUARTERLY MONTH DATA VIEW
     def quaterlymonthlydata(serv_from,serv_to):
@@ -320,7 +358,7 @@ class Models:
     def approve(month):
         cur = mysql.connection.cursor()
 
-        sql = "INSERT INTO `approved_month` ( `store_no`, `store_code`, `store_name`, `store_opening_date`, `city`, `state`, `region`, `type`, `status_of_store`, `footage_m2`, `footage_ft2`, `separate_elec_billing`, `separate_dg_billing`, `bill_received_by_store___sent_direct_to_ho`, `bill_paid_direct_or_landlord`, `service_from`, `service_to`, `elec___kwh`, `service_from1`, `service_to1`, `dg___kwh`, `service_from2`, `service_to2`, `hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg`, `average_taken_as_no_update_from_store`, `change_in_sq_ft_in_the_store`, `store_closed`, `new_store`, `closed_store_due_to_lock_down`, `notes`, `month`)SELECT  `store_no`, `store_code`, `store_name`, `store_opening_date`, `city`, `state`, `region`, `type`, `status_of_store`, `footage_m2`, `footage_ft2`, `separate_elec_billing`, `separate_dg_billing`, `bill_received_by_store___sent_direct_to_ho`, `bill_paid_direct_or_landlord`, `service_from`, `service_to`, `elec___kwh`, `service_from1`, `service_to1`, `dg___kwh`, `service_from2`, `service_to2`, `hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg`, `average_taken_as_no_update_from_store`, `change_in_sq_ft_in_the_store`, `store_closed`, `new_store`, `closed_store_due_to_lock_down`, `notes`, `month` FROM `user_tables` WHERE `month`= %s"
+        sql = "INSERT INTO `approved_month` ( `store_no`, `store_code`, `store_name`, `store_opening_date`, `city`, `state`, `region`, `type`, `status_of_store`, `footage_m2`, `footage_ft2`, `separate_elec_billing`, `separate_dg_billing`, `bill_received_by_store___sent_direct_to_ho`, `bill_paid_direct_or_landlord`, `service_from`, `service_to`, `elec___kwh`, `dg___kwh`, `hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg`, `average_taken_as_no_update_from_store`, `change_in_sq_ft_in_the_store`, `store_closed`, `new_store`, `closed_store_due_to_lock_down`, `notes`, `month`)SELECT  `store_no`, `store_code`, `store_name`, `store_opening_date`, `city`, `state`, `region`, `type`, `status_of_store`, `footage_m2`, `footage_ft2`, `separate_elec_billing`, `separate_dg_billing`, `bill_received_by_store___sent_direct_to_ho`, `bill_paid_direct_or_landlord`, `service_from`, `service_to`, `elec___kwh`, `dg___kwh`, `hvac___kwh`, `r22___kg`, `r404___kg`, `r407___kg`, `other___kg`, `average_taken_as_no_update_from_store`, `change_in_sq_ft_in_the_store`, `store_closed`, `new_store`, `closed_store_due_to_lock_down`, `notes`, `month` FROM `user_tables` WHERE `month`= %s"
 
     
         data=cur.execute(sql,[month])
@@ -467,3 +505,315 @@ class Models:
         return data
     
 
+#QUARTERLY TEST
+    def quarterlycheck(year,year1):
+        cur = mysql.connection.cursor()
+        # year = request.form['year'] 
+        # year1 = request.form['year1']
+        # year = '2022'
+        quarterly_report=[]
+        
+
+        # q1="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-30'"
+
+    # QUARTER 1
+        q1 = "SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from, DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to, MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month WHERE DATE(service_from) >= '"+str(year)+"-04-01' AND DATE(service_to) <= '"+str(year)+"-06-30';"
+
+        q11 = "SELECT `month` FROM approved_month WHERE DATE(service_from) >= '"+str(year)+"-04-01' AND DATE(service_to) <= '"+str(year)+"-06-30' GROUP BY `month`;"
+
+        a1 = cur.execute(q1)
+        d1=cur.fetchone()
+        a2 = cur.execute(q11)
+        d2=cur.fetchall()
+        
+        if d1 and d2:
+            # d1["month1"] = ""
+            # d1["month1"] = d2[0]["month"]
+            # d1["month2"] = d2[1]["month"]
+            # d1["month3"] = d2[2]["month"]
+            s1 = len(d2)
+            if s1:
+                s1 -= 1
+                d1["month1"] = d2[0]["month"]
+            if s1:
+                s1 -= 1
+                d1["month2"] = d2[1]["month"]
+            if s1:
+                s1 -= 1
+                d1["month3"] = d2[2]["month"]
+            
+
+            # for d in d2:
+            #     if d1["month1"] == "":
+            #         d1["month1"] = d["month"]
+            #     elif d1["month2"] == "":
+            #         d1["month2"] = d["month"]
+            #     elif d1["month3"] == "":
+            #         d1["month3"] = d["month"]
+            d1["quarter"]="Q1"
+            quarterly_report.append(d1)
+            print(d1["service_from"])
+
+    
+    # QUARTER 2
+        q2 = "SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where service_from >= '"+str(year)+"-07-01' and service_to<='"+str(year)+"-09-30'"
+
+        q22 = "SELECT `month` FROM approved_month WHERE DATE(service_from) >= '"+str(year)+"-07-01' AND DATE(service_to) <= '"+str(year)+"-09-30' GROUP BY `month`;"
+        
+        a1 = cur.execute(q2)
+        d1=cur.fetchone()
+        a2 = cur.execute(q22)
+        d2=cur.fetchall()
+        
+        if d1 and d2:
+            s1 = len(d2)
+            if s1:
+                s1 -= 1
+                d1["month1"] = d2[0]["month"]
+            if s1:
+                s1 -= 1
+                d1["month2"] = d2[1]["month"]
+            if s1:
+                s1 -= 1
+                d1["month3"] = d2[2]["month"]
+
+            d1["quarter"]="Q2"
+            quarterly_report.append(d1)
+            print(d1["service_from"])
+            
+
+
+    # QUARTER 3
+        q3="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where service_from >= '"+str(year)+"-10-01' and service_to<='"+str(year)+"-12-31'"
+
+        q33 = "SELECT `month` FROM approved_month WHERE DATE(service_from) >= '"+str(year)+"-10-01' AND DATE(service_to) <= '"+str(year)+"-12-31' GROUP BY `month`;"
+
+        a1 = cur.execute(q3)
+        d1=cur.fetchone()
+        a2 = cur.execute(q33)
+        d2=cur.fetchall()
+        
+        if d1 and d2:
+            s1 = len(d2)
+            if s1:
+                s1 -= 1
+                d1["month1"] = d2[0]["month"]
+            if s1:
+                s1 -= 1
+                d1["month2"] = d2[1]["month"]
+            if s1:
+                s1 -= 1
+                d1["month3"] = d2[2]["month"]
+                
+            d1["quarter"]="Q3"
+            quarterly_report.append(d1)
+            print(d1["service_from"])
+
+
+    # QUARTER 4
+        q4="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where service_from >= '"+str(year1)+"-01-01' and service_to<='"+str(year1)+"-03-31'"
+
+        q44 = "SELECT `month` FROM approved_month WHERE DATE(service_from) >= '"+str(year1)+"-01-01' AND DATE(service_to) <= '"+str(year1)+"-03-31' GROUP BY `month`;"
+
+        a1 = cur.execute(q4)
+        d1=cur.fetchone()
+        a2 = cur.execute(q44)
+        d2=cur.fetchall()
+        
+        if d1 and d2:
+            s1 = len(d2)
+            if s1:
+                s1 -= 1
+                d1["month1"] = d2[0]["month"]
+            if s1:
+                s1 -= 1
+                d1["month2"] = d2[1]["month"]
+            if s1:
+                s1 -= 1
+                d1["month3"] = d2[2]["month"]
+                
+            d1["quarter"]="Q4"
+            quarterly_report.append(d1)
+            print(d1["service_from"])
+
+        cur.close()
+        return quarterly_report
+
+
+# ELEC YEAR VIEW 
+ #YEAR ELEC VIEW
+    def yearlyelec(months):
+        cur = mysql.connection.cursor()
+
+
+        # sql = "SELECT store_no, store_code, store_name, city, state, region,SUM(CASE WHEN month = '"+month1+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month1_elec_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month2_elec_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month3_elec_kwh,SUM(CASE WHEN month = '"+month4+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month4_elec_kwh,SUM(CASE WHEN month = '"+month5+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month5_elec_kwh,SUM(CASE WHEN month = '"+month6+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month6_elec_kwh,SUM(CASE WHEN month = '"+month7+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month7_elec_kwh,SUM(CASE WHEN month = '"+month8+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month8_elec_kwh,SUM(CASE WHEN month = '"+month9+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month9_elec_kwh,SUM(CASE WHEN month = '"+month10+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month10_elec_kwh,SUM(CASE WHEN month = '"+month11+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month11_elec_kwh,SUM(CASE WHEN month = '"+month12+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month12_elec_kwh FROM approved_month WHERE month IN (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) GROUP BY store_code ORDER BY store_code; "
+        print(months)
+        print(type(months))
+        months = json.loads(months)
+
+        print(type(months))
+        placeholders = ','.join(['%s']*len(months))
+
+        sql = f"""
+        SELECT store_no, store_code, store_name, city, state, region,
+        {','.join([f"SUM(CASE WHEN month='{month}' THEN CAST(elec___kwh AS DECIMAL(10,2)) END) AS {month}_elec_kwh" for month in months])}
+        FROM approved_month
+        WHERE month IN ({placeholders})
+        GROUP BY store_code
+        ORDER BY store_code;    
+        """
+        print(sql)
+
+
+        # Execute the query with the parameters
+        cur.execute(sql,months)
+
+
+      
+        # cur.execute(sql,[month1,month2,month3,month4,month5,month6,month7,month8,month9,month10,month11,month12])
+        data = cur.fetchall()
+        cur.close()
+        return data
+
+
+    #YEAR DG VIEW
+    def yearlydg(months):
+        cur = mysql.connection.cursor()
+        months = json.loads(months)
+        placeholders = ','.join(['%s']*len(months))
+
+        sql = f"""
+        SELECT store_no, store_code, store_name, city, state, region,
+        {','.join([f"SUM(CASE WHEN month='{month}' THEN CAST(dg___kwh AS DECIMAL(10,2)) END) AS {month}_dg_kwh" for month in months])}
+        FROM approved_month
+        WHERE month IN ({placeholders})
+        GROUP BY store_code
+        ORDER BY store_code;    
+        """
+        print(sql)
+        # Execute the query with the parameters
+        cur.execute(sql,months)
+        data = cur.fetchall()
+        cur.close()
+        return data
+
+
+#YEAR HVAC VIEW
+    def yearlyhvac(months):
+        cur = mysql.connection.cursor()
+        print(type(months))
+        months = json.loads(months)
+        print(type(months))
+        placeholders = ','.join(['%s']*len(months))
+
+        sql = f"""
+        SELECT store_no, store_code, store_name, city, state, region,
+        {','.join([f"SUM(CASE WHEN month='{month}' THEN CAST(hvac___kwh AS DECIMAL(10,2)) END) AS {month}_hvac_kwh" for month in months])}
+        FROM approved_month
+        WHERE month IN ({placeholders})
+        GROUP BY store_code
+        ORDER BY store_code;    
+        """
+        
+        print(sql)
+        # Execute the query with the parameters
+        cur.execute(sql,months)
+        data = cur.fetchall()
+        cur.close()
+        return data
+    
+
+#YEAR HVAC VIEW
+    def yearlyr22(months):
+        cur = mysql.connection.cursor()
+        print(type(months))
+        months = json.loads(months)
+        print(type(months))
+        placeholders = ','.join(['%s']*len(months))
+
+        sql = f"""
+        SELECT store_no, store_code, store_name, city, state, region,
+        {','.join([f"SUM(CASE WHEN month='{month}' THEN CAST(r22___kwh AS DECIMAL(10,2)) END) AS {month}_r22_kwh" for month in months])}
+        FROM approved_month
+        WHERE month IN ({placeholders})
+        GROUP BY store_code
+        ORDER BY store_code;    
+        """
+        print(sql)
+        # Execute the query with the parameters
+        cur.execute(sql,months)
+        data = cur.fetchall()
+        cur.close()
+        return data
+    
+
+#YEAR HVAC VIEW
+    def yearlyr404(months):
+        cur = mysql.connection.cursor()
+        print(type(months))
+        months = json.loads(months)
+        print(type(months))
+        placeholders = ','.join(['%s']*len(months))
+
+        sql = f"""
+        SELECT store_no, store_code, store_name, city, state, region,
+        {','.join([f"SUM(CASE WHEN month='{month}' THEN CAST(r404___kwh AS DECIMAL(10,2)) END) AS {month}_r404_kwh" for month in months])}
+        FROM approved_month
+        WHERE month IN ({placeholders})
+        GROUP BY store_code
+        ORDER BY store_code;    
+        """
+        print(sql)
+        # Execute the query with the parameters
+        cur.execute(sql,months)
+        data = cur.fetchall()
+        cur.close()
+        return data
+    
+
+#YEAR HVAC VIEW
+    def yearlyr407(months):
+        cur = mysql.connection.cursor()
+        print(type(months))
+        months = json.loads(months)
+        print(type(months))
+        placeholders = ','.join(['%s']*len(months))
+
+        sql = f"""
+        SELECT store_no, store_code, store_name, city, state, region,
+        {','.join([f"SUM(CASE WHEN month='{month}' THEN CAST(r407___kwh AS DECIMAL(10,2)) END) AS {month}_r407_kwh" for month in months])}
+        FROM approved_month
+        WHERE month IN ({placeholders})
+        GROUP BY store_code
+        ORDER BY store_code;    
+        """
+        print(sql)
+        # Execute the query with the parameters
+        cur.execute(sql,months)
+        data = cur.fetchall()
+        cur.close()
+        return data
+    
+
+#YEAR HVAC VIEW
+    def yearlyother(months):
+        cur = mysql.connection.cursor()
+        print(type(months))
+        months = json.loads(months)
+        print(type(months))
+        placeholders = ','.join(['%s']*len(months))
+
+        sql = f"""
+        SELECT store_no, store_code, store_name, city, state, region,
+        {','.join([f"SUM(CASE WHEN month='{month}' THEN CAST(other___kwh AS DECIMAL(10,2)) END) AS {month}_other_kwh" for month in months])}
+        FROM approved_month
+        WHERE month IN ({placeholders})
+        GROUP BY store_code
+        ORDER BY store_code;    
+        """
+        print(sql)
+        # Execute the query with the parameters
+        cur.execute(sql,months)
+        data = cur.fetchall()
+        cur.close()
+        return data

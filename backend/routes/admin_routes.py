@@ -698,83 +698,18 @@ def uploadfile():
 
 ############### QUATERLY ###############
 
-
-quarters = ["Q1","Q2","Q3","Q4"]
-
+# quarters = ["Q1","Q2","Q3","Q4"]
 
 #QUATERLT REPORTS
 @api.route('/quarterly_reports',methods = ['GET','POST'])
 def quarterly_reports():
-    cur = mysql.connection.cursor()
+    
     year = request.form['year'] 
     year1 = request.form['year1']
-    year = '2022'
-    quarterly_report=[]
     
+    quarterly_report = db.quarterlycheck(year,year1)
 
-    # q1="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to) <= '"+str(year)+"-06-30'"
-
-    q1 = "SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from, DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to, MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month WHERE DATE(service_from) >= '"+str(year)+"-04-01' AND DATE(service_to) <= '"+str(year)+"-06-30';"
-
-    q11 = "SELECT `month` FROM approved_month WHERE DATE(service_from) >= '"+str(year)+"-04-01' AND DATE(service_to) <= '"+str(year)+"-06-30' GROUP BY `month`;"
-
-    a1 = cur.execute(q1)
-    d1=cur.fetchone()
-    a2 = cur.execute(q11)
-    d2=cur.fetchall()
-    
-    if d1 and d2:
-        # d1["month1"] = ""
-        # d1["month1"] = d2[0]["month"]
-        # d1["month2"] = d2[1]["month"]
-        # d1["month3"] = d2[2]["month"]
-        s1 = len(d2)
-        if s1:
-            s1 -= 1
-            d1["month1"] = d2[0]["month"]
-        if s1:
-            s1 -= 1
-            d1["month2"] = d2[1]["month"]
-        if s1:
-            s1 -= 1
-            d1["month3"] = d2[2]["month"]
-
-        # for d in d2:
-        #     if d1["month1"] == "":
-        #         d1["month1"] = d["month"]
-        #     elif d1["month2"] == "":
-        #         d1["month2"] = d["month"]
-        #     elif d1["month3"] == "":
-        #         d1["month3"] = d["month"]
-        d1["quarter"]="Q1"
-        quarterly_report.append(d1)
-        print(d1["service_from"])
-
-    q2="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where service_from >= '"+str(year)+"-07-01' and service_to<='"+str(year)+"-09-30'"
-    cur.execute(q2)
-    d2=cur.fetchone()
-    if d2:
-        d2["quarter"]="Q2"
-        quarterly_report.append(d2)
-        
-    q3="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where service_from >= '"+str(year)+"-10-01' and service_to<='"+str(year)+"-12-31'"
-    cur.execute(q3)
-    d3=cur.fetchone()
-    if d3:
-        d3["quarter"]="Q3"
-        quarterly_report.append(d3)
-
-    q4="SELECT DATE_FORMAT(MIN(`service_from`),'%Y-%m-%d') as service_from,DATE_FORMAT(MAX(`service_to`),'%Y-%m-%d') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where service_from >= '"+str(year1)+"-01-01' and service_to<='"+str(year1)+"-03-31'"
-    cur.execute(q4)
-    d4=cur.fetchone()
-    if d4:
-        d4["quarter"]="Q4"
-        quarterly_report.append(d4)
-
-    cur.close()
-    # print(quarterly_report)
-
-    return jsonify ({'status':True,'data':quarterly_report})
+    return jsonify ({'status':True,'data': quarterly_report})
 
 #QUARTERLY VIEW
 @api.route('/quarterly_view',methods = ['POST','GET'])
@@ -791,13 +726,41 @@ def quarter():
 @api.route('/quarterly_view1',methods = ['POST','GET'])
 def quarter1():
 
+    year = request.form['year'] 
+    year1 = request.form['year1']
     month1 = request.form['month1']
     month2 = request.form['month2']
     month3 = request.form['month3']
+    quarter = request.form['quarter']
     
+    
+    quarterly_reports  = db.quarterlycheck(year,year1)
+    print(quarterly_reports)
+ 
 
-    data = db.quaterlydata1(month1,month2,month3)
-    return jsonify ({'status':True,'data':data})
+    if quarterly_reports:
+
+        for quarterly_report in quarterly_reports:
+            if quarter == quarterly_report['quarter']:
+                print(quarterly_report)
+                # length = len(quarterly_report)
+                if quarterly_report.get('month1') != None and  quarterly_report.get('month2') == None and quarterly_report.get('month3') == None:
+                    data1 = db.quaterlydata1(month1 or month2 or month3)
+                    print('test2')
+                    return jsonify ({'status':True,'msg' : 'quaterlydata1','data':data1})
+                    
+                elif quarterly_report.get('month1') != None and quarterly_report.get('month2') != None and quarterly_report.get('month3') == None:
+                    data2 = db.quaterlydata2(month1,month2 or month3)
+                    print('test3')
+                    return jsonify ({'status':True,'msg' : 'quaterlydata2','data':data2})
+                    
+                elif quarterly_report.get('month1') != None and quarterly_report.get('month2') != None and quarterly_report.get('month3') != None:
+                    data3 = db.quaterlydata3(month1,month2,month3)  
+                    print('test4')
+                    return jsonify ({'status':True,'msg' : 'quaterlydata3','data':data3})
+    else:
+        print('test5')
+        return jsonify ({'status':True,'msg':'Data Fetched Successfully'})
 
 
 ############### YEARLY ###############
@@ -814,14 +777,57 @@ def yearly_reports():
     
     sql = "SELECT DATE_FORMAT(MIN(`service_from`),'%d-%m-%Y') as service_from, DATE_FORMAT(MAX(`service_to`),'%d-%m-%Y') as service_to,MIN(`service_from`) as service_fromm, MAX(`service_to`) as service_too FROM approved_month where DATE(service_from) >= '"+str(year)+"-04-01' and DATE(service_to)<='"+str(year1)+"-03-31'"
 
-    print(sql)
-    cur.execute(sql)
-    data = cur.fetchone()
-    print(data)
-    if data:
-        # data["year"] = '2022'
-        yearly_report.append(data)
-        print(yearly_report)
+    sql1 = "SELECT `month` FROM approved_month WHERE DATE(service_from) >= '"+str(year)+"-04-01' AND DATE(service_to) <= '"+str(year1)+"-03-31' GROUP BY `month`;"
+
+    a1 = cur.execute(sql)
+    d1=cur.fetchone()
+    a2 = cur.execute(sql1)
+    d2=cur.fetchall()
+    print(d2)
+    if d1 and d2:
+            
+            s1 = len(d2)
+            # if s1:
+            #     s1 -= 1
+            #     d1["month1"] = d2[0]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month2"] = d2[1]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month3"] = d2[2]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month4"] = d2[3]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month5"] = d2[4]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month6"] = d2[5]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month7"] = d2[6]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month8"] = d2[7]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month9"] = d2[8]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month10"] = d2[9]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month11"] = d2[10]["month"]
+            # if s1:
+            #     s1 -= 1
+            #     d1["month12"] = d2[11]["month"]
+            d1['months'] = [d["month"] for d in d2]
+            
+            yearly_report.append(d1)
+            print(yearly_report)
+    cur.close()
     return jsonify ({'status':True,'data':yearly_report})
 
 
@@ -833,8 +839,80 @@ def yearview():
     service_from = request.form['serv_from']
     service_to = request.form['serv_to']
 
+
     data = db.yearview(service_from,service_to)
     return jsonify ({'status':True,'data':data})
+
+
+#YEARLY ELEC
+@api.route('/month_elec_view',methods = ['POST','GET'])
+def elecyearview():
+
+    months = request.form['months']
+
+    data = db.yearlyelec(months)
+    return jsonify ({'status':True,'data':data})
+
+
+#YEARLY DG
+@api.route('/month_dg_view',methods = ['POST','GET'])
+def dgyearview():
+
+    months = request.form['months']
+
+    data = db.yearlydg(months)
+    return jsonify ({'status':True,'data':data})
+
+
+#YEARLY HVAC
+@api.route('/month_hvac_view',methods = ['POST','GET'])
+def hvacyearview():
+
+    months = request.form['months']
+
+    data = db.yearlyhvac(months)
+    return jsonify ({'status':True,'data':data})
+
+
+#YEARLY R22
+@api.route('/month_r22_view',methods = ['POST','GET'])
+def r22yearview():
+
+    months = request.form['months']
+
+    data = db.yearlyr22(months)
+    return jsonify ({'status':True,'data':data})
+
+
+#YEARLY R404
+@api.route('/month_r404_view',methods = ['POST','GET'])
+def r404yearview():
+
+    months = request.form['months']
+
+    data = db.yearlyr404(months)
+    return jsonify ({'status':True,'data':data})
+
+
+#YEARLY R407
+@api.route('/month_r407_view',methods = ['POST','GET'])
+def r407yearview():
+
+    months = request.form['months']
+
+    data = db.yearlyr407(months)
+    return jsonify ({'status':True,'data':data})
+
+
+#YEARLY OTHER
+@api.route('/month_other_view',methods = ['POST','GET'])
+def otheryearview():
+
+    months = request.form['months']
+
+    data = db.yearlyother(months)
+    return jsonify ({'status':True,'data':data})
+
 
 ############### FOLLOW UP ###############
 
