@@ -249,7 +249,6 @@ class Models:
     def quaterlydata2(month1,month2):
         cur = mysql.connection.cursor()
 
-
         sql = "SELECT store_no, store_code, store_name, city, state, region,SUM(CASE WHEN month = '"+month1+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month1_elec_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month2_elec_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month1_dg_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month2_dg_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month1_hvac_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month2_hvac_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month1_r22_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month2_r22_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month1_r404_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month2_r404_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month1_r407_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month2_r407_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month1_other_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month2_other_kg FROM approved_month WHERE month IN (%s, %s) GROUP BY store_code ORDER BY store_code; "
       
         cur.execute(sql,[month1,month2])
@@ -261,9 +260,6 @@ class Models:
     #QUARTERLY VIEW3
     def quaterlydata3(month1,month2,month3):
         cur = mysql.connection.cursor()
-
-
-       
 
         sql = "SELECT store_no, store_code, store_name, city, state, region,SUM(CASE WHEN month = '"+month1+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month1_elec_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month2_elec_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((elec___kwh)AS DECIMAL(10,2)) END) AS month3_elec_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month1_dg_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month2_dg_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((dg___kwh)AS DECIMAL(10,2)) END) AS month3_dg_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month1_hvac_kwh,SUM(CASE WHEN month = '"+month2+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month2_hvac_kwh,SUM(CASE WHEN month = '"+month3+"' THEN CAST((hvac___kwh)AS DECIMAL(10,2)) END) AS month3_hvac_kwh,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month1_r22_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month2_r22_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r22___kg)AS DECIMAL(10,2)) END) AS month3_r22_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month1_r404_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month2_r404_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r404___kg)AS DECIMAL(10,2)) END) AS month3_r404_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month1_r407_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month2_r407_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((r407___kg)AS DECIMAL(10,2)) END) AS month3_r407_kg,SUM(CASE WHEN month = '"+month1+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month1_other_kg,SUM(CASE WHEN month = '"+month2+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month2_other_kg,SUM(CASE WHEN month = '"+month3+"' THEN CAST((other___kg)AS DECIMAL(10,2)) END) AS month3_other_kg FROM approved_month WHERE month IN (%s, %s, %s) GROUP BY store_code ORDER BY store_code; "
       
@@ -641,7 +637,9 @@ class Models:
 
 
 # ELEC YEAR VIEW 
- #YEAR ELEC VIEW
+
+
+#YEAR ELEC VIEW
     def yearlyelec(months):
         cur = mysql.connection.cursor()
 
@@ -676,7 +674,7 @@ class Models:
         return data
 
 
-    #YEAR DG VIEW
+#YEAR DG VIEW
     def yearlydg(months):
         cur = mysql.connection.cursor()
         months = json.loads(months)
@@ -714,7 +712,6 @@ class Models:
         GROUP BY store_code
         ORDER BY store_code;    
         """
-        
         print(sql)
         # Execute the query with the parameters
         cur.execute(sql,months)
@@ -723,7 +720,7 @@ class Models:
         return data
     
 
-#YEAR HVAC VIEW
+#YEAR R22 VIEW
     def yearlyr22(months):
         cur = mysql.connection.cursor()
         print(type(months))
@@ -747,7 +744,7 @@ class Models:
         return data
     
 
-#YEAR HVAC VIEW
+#YEAR R404 VIEW
     def yearlyr404(months):
         cur = mysql.connection.cursor()
         print(type(months))
@@ -771,7 +768,7 @@ class Models:
         return data
     
 
-#YEAR HVAC VIEW
+#YEAR R407 VIEW
     def yearlyr407(months):
         cur = mysql.connection.cursor()
         print(type(months))
@@ -795,7 +792,7 @@ class Models:
         return data
     
 
-#YEAR HVAC VIEW
+#YEAR OTHER VIEW
     def yearlyother(months):
         cur = mysql.connection.cursor()
         print(type(months))
@@ -816,4 +813,43 @@ class Models:
         cur.execute(sql,months)
         data = cur.fetchall()
         cur.close()
+        return data
+    
+
+############### BULK UPDATE ###############
+
+
+# FOLLOW UP BULK UPDATE
+    def followupbulkupdate(follow1,follow2,follow3,billpaid,mms,bulk_update):
+        
+        cur = mysql.connection.cursor()
+
+        print(bulk_update)
+        print(type(bulk_update))
+        bulk_update = json.loads(bulk_update)
+        print(type(bulk_update))
+       
+        placeholders = ",".join(["%s"] * len(bulk_update))
+
+        sql = "UPDATE `user_tables` SET `follow1`= %s, `follow2`= %s, `follow3`= %s, `bill_paid`= %s, `mms`= %s WHERE `id` IN ({})".format(placeholders)
+
+        print(sql)
+        # cur.execute(sql,[follow1,follow2,follow3,bill_paid,mms],tuple(bulk_update.values()))
+        cur.execute(sql, [follow1, follow2, follow3, billpaid, mms] + list(bulk_update))
+
+        mysql.connection.commit()
+        cur.close()
+
+
+############### SUMMARY ###############
+
+
+# CHECK EMAIL FOR FORGOT PASSWORD
+    def summary(month):
+        cur=mysql.connection.cursor()
+        
+        sql= "SELECT COUNT(`store_no`) as stores,COUNT(CASE WHEN `follow1` = 'No' THEN 1 ELSE NULL END) as follow1no, COUNT(CASE WHEN `follow1` = 'Yes' THEN 1 ELSE NULL END) as follow1yes, COUNT(CASE WHEN `follow2` = 'No' THEN 1 ELSE NULL END) as follow2no, COUNT(CASE WHEN `follow2` = 'Yes' THEN 1 ELSE NULL END) as follow2yes, COUNT(CASE WHEN `follow3` = 'No' THEN 1 ELSE NULL END) as follow3no, COUNT(CASE WHEN `follow3` = 'Yes' THEN 1 ELSE NULL END) as follow3yes, COUNT(CASE WHEN `bill_paid` = 'No' THEN 1 ELSE NULL END) as billpaidno, COUNT(CASE WHEN `bill_paid` = 'Yes' THEN 1 ELSE NULL END) as billpaidyes, `month` FROM `user_tables` WHERE `month`= %s;"
+
+        cur.execute(sql,[month])
+        data = cur.fetchone()
         return data

@@ -1008,7 +1008,7 @@ def forgetpassword():
     return jsonify({'status':True,'msg': 'password updated'})
 
 
-############### bills upload ###############
+############### BILLS UPLOAD ###############
 
 
 # UPLOAD BILLS
@@ -1022,3 +1022,36 @@ def uploadbills():
     db.billupload(billmonth,billname,uploaddate)
     
     return jsonify({'status': True, "msg": 'bill uploaded sucessfully'})
+
+
+############### BULK UPDATE ###############
+
+
+# FOLLOW UP BULK UPDATE
+@api.route('/followup_bulk_update',methods =['POST','GET'])
+def followupbulkupdate():
+
+    follow1 = request.form['follow1']
+    follow2 = request.form['follow2']
+    follow3 = request.form['follow3']
+    billpaid = request.form['billpaid']
+    mms = request.form['mms']
+    bulk_update = request.form['bulk_update']
+    
+    db.followupbulkupdate(follow1,follow2,follow3,billpaid,mms,bulk_update)
+   
+    return jsonify({'status':True,'msg': 'data updated'})
+
+
+############### FOLLOW UP SUMMARY ###############
+
+
+# FOLLOW UP SUMMARY
+@api.route('/followup_summary',methods =['POST','GET'])
+def followupsummary():
+
+    month = request.form['month']  
+
+    data = db.summary(month)
+   
+    return jsonify({'status':True,'data':data,'msg': 'summary fetched'})
